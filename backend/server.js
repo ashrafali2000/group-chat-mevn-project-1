@@ -9,7 +9,7 @@ const roomsRoutes = require("./routes/roomsRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const passport = require("passport");
+// const passport = require("passport");
 require("./passport");
 const compression = require("compression");
 const registerUserHandlers = require("./socket/handlers/userHandler");
@@ -21,11 +21,11 @@ const { socketVerifyToken } = require("./middlewares/socketMiddleware");
 const app = express();
 
 // Server middlewares
-app.use(cors({ origin: process.env.APP_URL, credentials: true })); //Server CORS
+app.use(cors()); //Server CORS
 app.use(express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
 // Compress all HTTP responses
 app.use(compression());
@@ -69,7 +69,7 @@ io.use(socketVerifyToken);
 const onConnection = async (socket) => {
   console.log(socket.user.nickname, "is connected.");
   console.log("user info:", socket.user);
-  console.log("socket id:", socket.id);
+  console.log("socket id:", socket.id); 
   registerUserHandlers(io, socket);
   registerChatHandlers(io, socket);
   registerRoomHandlers(io, socket);
